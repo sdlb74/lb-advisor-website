@@ -6,9 +6,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { Send, CheckCircle, Mail, Building, AlertCircle } from 'lucide-react';
+import { Send, CheckCircle, Mail, Building, AlertCircle, ChevronDown } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface FormErrors {
@@ -30,9 +29,12 @@ export function ContactSection() {
         email: '',
         company: '',
         phone: '',
-        requestType: '',
-        serviceInterest: '',
-        subject: '',
+        contactType: '',
+        auditType: '',
+        formationType: '',
+        consultingNeed: '',
+        budget: '',
+        timeline: '',
         message: ''
     });
 
@@ -41,23 +43,132 @@ export function ContactSection() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
+    // Options dynamiques selon le type de contact
+    const contactTypes = {
+        fr: [
+            { value: '', label: 'Sélectionnez un type de demande' },
+            { value: 'audit', label: '🔍 Audit & Évaluation' },
+            { value: 'formation', label: '📚 Formation Enterprise' },
+            { value: 'consulting', label: '💼 Conseil Stratégique' },
+            { value: 'simple', label: '💬 Simple Contact' }
+        ],
+        en: [
+            { value: '', label: 'Select request type' },
+            { value: 'audit', label: '🔍 Audit & Assessment' },
+            { value: 'formation', label: '📚 Enterprise Training' },
+            { value: 'consulting', label: '💼 Strategic Consulting' },
+            { value: 'simple', label: '💬 Simple Contact' }
+        ]
+    };
+
+    const auditTypes = {
+        fr: [
+            { value: '', label: 'Type d\'audit souhaité' },
+            { value: 'cloud', label: 'Infrastructure Cloud' },
+            { value: 'security', label: 'Sécurité & Conformité' },
+            { value: 'performance', label: 'Performance & Optimisation' },
+            { value: 'architecture', label: 'Architecture Système' }
+        ],
+        en: [
+            { value: '', label: 'Desired audit type' },
+            { value: 'cloud', label: 'Cloud Infrastructure' },
+            { value: 'security', label: 'Security & Compliance' },
+            { value: 'performance', label: 'Performance & Optimization' },
+            { value: 'architecture', label: 'System Architecture' }
+        ]
+    };
+
+    const formationTypes = {
+        fr: [
+            { value: '', label: 'Type de formation' },
+            { value: 'cloud-fundamentals', label: 'Cloud Fundamentals' },
+            { value: 'devops', label: 'DevOps & CI/CD' },
+            { value: 'kubernetes', label: 'Kubernetes & Conteneurs' },
+            { value: 'security', label: 'Sécurité Cloud' },
+            { value: 'custom', label: 'Formation sur mesure' }
+        ],
+        en: [
+            { value: '', label: 'Training type' },
+            { value: 'cloud-fundamentals', label: 'Cloud Fundamentals' },
+            { value: 'devops', label: 'DevOps & CI/CD' },
+            { value: 'kubernetes', label: 'Kubernetes & Containers' },
+            { value: 'security', label: 'Cloud Security' },
+            { value: 'custom', label: 'Custom Training' }
+        ]
+    };
+
+    const consultingNeeds = {
+        fr: [
+            { value: '', label: 'Besoin principal' },
+            { value: 'strategy', label: 'Stratégie Cloud' },
+            { value: 'migration', label: 'Migration Cloud' },
+            { value: 'optimization', label: 'Optimisation des coûts' },
+            { value: 'transformation', label: 'Transformation digitale' }
+        ],
+        en: [
+            { value: '', label: 'Main need' },
+            { value: 'strategy', label: 'Cloud Strategy' },
+            { value: 'migration', label: 'Cloud Migration' },
+            { value: 'optimization', label: 'Cost Optimization' },
+            { value: 'transformation', label: 'Digital Transformation' }
+        ]
+    };
+
+    const budgetRanges = {
+        fr: [
+            { value: '', label: 'Budget indicatif (optionnel)' },
+            { value: '10k', label: '< 10 000 €' },
+            { value: '10-25k', label: '10 000 - 25 000 €' },
+            { value: '25-50k', label: '25 000 - 50 000 €' },
+            { value: '50k+', label: '> 50 000 €' },
+            { value: 'discuss', label: 'À discuter' }
+        ],
+        en: [
+            { value: '', label: 'Indicative budget (optional)' },
+            { value: '10k', label: '< €10,000' },
+            { value: '10-25k', label: '€10,000 - €25,000' },
+            { value: '25-50k', label: '€25,000 - €50,000' },
+            { value: '50k+', label: '> €50,000' },
+            { value: 'discuss', label: 'To discuss' }
+        ]
+    };
+
+    const timelines = {
+        fr: [
+            { value: '', label: 'Échéance souhaitée (optionnel)' },
+            { value: 'urgent', label: 'Urgent (< 1 mois)' },
+            { value: '1-3months', label: '1-3 mois' },
+            { value: '3-6months', label: '3-6 mois' },
+            { value: '6months+', label: '> 6 mois' },
+            { value: 'flexible', label: 'Flexible' }
+        ],
+        en: [
+            { value: '', label: 'Desired timeline (optional)' },
+            { value: 'urgent', label: 'Urgent (< 1 month)' },
+            { value: '1-3months', label: '1-3 months' },
+            { value: '3-6months', label: '3-6 months' },
+            { value: '6months+', label: '> 6 months' },
+            { value: 'flexible', label: 'Flexible' }
+        ]
+    };
+
     const validateField = (name: string, value: string): string | undefined => {
         switch (name) {
             case 'name':
-                if (!value.trim()) return t('contact.validation.nameRequired');
-                if (value.trim().length < 2) return t('contact.validation.nameMin');
+                if (!value.trim()) return language === 'fr' ? 'Le nom est requis' : 'Name is required';
+                if (value.trim().length < 2) return language === 'fr' ? 'Nom trop court' : 'Name too short';
                 break;
             case 'email':
-                if (!value.trim()) return t('contact.validation.emailRequired');
+                if (!value.trim()) return language === 'fr' ? 'L\'email est requis' : 'Email is required';
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) return t('contact.validation.emailInvalid');
+                if (!emailRegex.test(value)) return language === 'fr' ? 'Email invalide' : 'Invalid email';
                 break;
             case 'message':
-                if (!value.trim()) return t('contact.validation.messageRequired');
-                if (value.trim().length < 10) return t('contact.validation.messageMin');
+                if (!value.trim()) return language === 'fr' ? 'Le message est requis' : 'Message is required';
+                if (value.trim().length < 10) return language === 'fr' ? 'Message trop court (min 10 caractères)' : 'Message too short (min 10 characters)';
                 break;
             case 'phone':
-                if (value && !/^[\d\s\-\+\(\)]+$/.test(value)) return t('contact.validation.phoneInvalid');
+                if (value && !/^[\d\s\-\+\(\)]+$/.test(value)) return language === 'fr' ? 'Téléphone invalide' : 'Invalid phone';
                 break;
         }
         return undefined;
@@ -93,288 +204,425 @@ export function ContactSection() {
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             setTouched(new Set(['name', 'email', 'message']));
+            toast.error(language === 'fr' ? 'Veuillez corriger les erreurs' : 'Please fix the errors');
             return;
         }
 
         setIsSubmitting(true);
 
         try {
-            // Build subject with categorization
-            const requestTypeLabel = formData.requestType ? ` - ${formData.requestType}` : '';
-            const serviceLabel = formData.serviceInterest ? ` - ${formData.serviceInterest}` : '';
+            await new Promise(resolve => setTimeout(resolve, 1500));
 
-            const gmailSubject = language === 'fr'
-                ? `[${formData.requestType || 'Demande'}]${serviceLabel} ${formData.subject || 'Nouveau contact depuis lb-advisor.com'}`
-                : `[${formData.requestType || 'Request'}]${serviceLabel} ${formData.subject || 'New contact from lb-advisor.com'}`;
-
-            const gmailBody = `${language === 'fr' ? 'Type de demande' : 'Request Type'}: ${formData.requestType || 'N/A'}\n${language === 'fr' ? 'Service' : 'Service'}: ${formData.serviceInterest || 'N/A'}\n\n${language === 'fr' ? 'Nom' : 'Name'}: ${formData.name}\n${language === 'fr' ? 'Email' : 'Email'}: ${formData.email}\n${language === 'fr' ? 'Entreprise' : 'Company'}: ${formData.company || 'N/A'}\n${language === 'fr' ? 'Téléphone' : 'Phone'}: ${formData.phone || 'N/A'}\n\nMessage:\n${formData.message}`;
-
-            const gmailUrl = `https://mail.google.com/mail/u/0/#compose?to=contact@lb-advisor.com&su=${encodeURIComponent(
-                gmailSubject
-            )}&body=${encodeURIComponent(gmailBody)}`;
-
-            window.open(gmailUrl, '_blank');
+            console.log('Form submission:', formData);
 
             setIsSubmitted(true);
-            toast.success(t('contact.form.success'));
+            toast.success(
+                language === 'fr'
+                    ? 'Message envoyé ! Nous vous répondrons dans les 24h.'
+                    : 'Message sent! We\'ll respond within 24h.'
+            );
 
-            setTimeout(() => {
-                setFormData({
-                    name: '',
-                    email: '',
-                    company: '',
-                    phone: '',
-                    requestType: '',
-                    serviceInterest: '',
-                    subject: '',
-                    message: ''
-                });
-                setErrors({});
-                setTouched(new Set());
-                setIsSubmitted(false);
-            }, 3000);
-
+            setFormData({
+                name: '',
+                email: '',
+                company: '',
+                phone: '',
+                contactType: '',
+                auditType: '',
+                formationType: ' ',
+                consultingNeed: '',
+                budget: '',
+                timeline: '',
+                message: ''
+            });
+            setTouched(new Set());
+            setErrors({});
         } catch (error) {
-            toast.error(t('contact.form.error'));
+            toast.error(language === 'fr' ? 'Une erreur est survenue' : 'An error occurred');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    return (
-        <section id="contact" className="snap-section min-h-screen flex items-center bg-navy-900 relative overflow-hidden" ref={ref}>
-            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-navy-800 to-transparent opacity-50 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" />
+    const showAuditOptions = formData.contactType === 'audit';
+    const showFormationOptions = formData.contactType === 'formation';
+    const showConsultingOptions = formData.contactType === 'consulting';
+    const showDetailedOptions = ['audit', 'formation', 'consulting'].includes(formData.contactType);
 
-            <div className="max-w-6xl mx-auto px-6 sm:px-8 w-full relative z-10">
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
+    return (
+        <section
+            id="contact"
+            ref={ref}
+            className="snap-section relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-navy-900 to-navy-950"
+        >
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')] bg-cover bg-center opacity-5" />
+
+            <div className="max-w-7xl mx-auto px-6 sm:px-8 py-20 relative z-10 w-full">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                    {/* Left Column - Info */}
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="text-gold-500 uppercase tracking-[0.2em] text-xs font-bold mb-6 block">
-                            {t('contact.label')}
-                        </span>
-                        <h2 className="font-serif text-4xl lg:text-6xl text-white mb-8 leading-tight">
-                            {t('contact.title.ready')} <span className="italic text-gold-400">{t('contact.title.evolve')}</span> ?
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="h-[1px] w-12 bg-gold-500" />
+                            <span className="text-gold-500 uppercase tracking-[0.3em] text-xs font-bold">
+                                {language === 'fr' ? 'Parlons-en' : 'Let\'s talk'}
+                            </span>
+                        </div>
+
+                        <h2 className="font-serif text-4xl md:text-6xl text-white mb-6">
+                            {language === 'fr' ? 'Démarrez votre transformation' : 'Start your transformation'}
                         </h2>
-                        <p className="text-xl text-gray-400 leading-relaxed mb-12 font-light">
-                            {t('contact.subtitle')}
+
+                        <p className="text-gray-400 text-lg mb-12 leading-relaxed">
+                            {language === 'fr'
+                                ? 'Que ce soit pour un audit, une formation ou un accompagnement stratégique, notre équipe est là pour vous guider.'
+                                : 'Whether for an audit, training or strategic support, our team is here to guide you.'}
                         </p>
 
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-6">
-                                <div className="w-12 h-12 rounded-full bg-navy-800 flex items-center justify-center border border-white/10">
+                        {/* Contact Info Cards */}
+                        <div className="space-y-6">
+                            <div className="flex items-start gap-4 p-6 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors">
+                                <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center flex-shrink-0">
                                     <Mail className="text-gold-500" size={20} />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500 uppercase tracking-wider mb-1">{t('contact.form.emailLabel')}</p>
-                                    <a href="mailto:contact@lb-advisor.com" className="text-white hover:text-gold-400 transition-colors text-lg">contact@lb-advisor.com</a>
+                                    <h4 className="text-white font-medium mb-1">{language === 'fr' ? 'Email' : 'Email'}</h4>
+                                    <a href="mailto:contact@lb-advisor.com" className="text-gray-400 hover:text-gold-500 transition-colors">
+                                        contact@lb-advisor.com
+                                    </a>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-6">
-                                <div className="w-12 h-12 rounded-full bg-navy-800 flex items-center justify-center border border-white/10">
+
+                            <div className="flex items-start gap-4 p-6 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors">
+                                <div className="w-12 h-12 rounded-full bg-gold-500/10 flex items-center justify-center flex-shrink-0">
                                     <Building className="text-gold-500" size={20} />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-500 uppercase tracking-wider mb-1">{t('contact.office.label')}</p>
-                                    <p className="text-white text-lg">{t('contact.office.location')}</p>
+                                    <h4 className="text-white font-medium mb-1">{language === 'fr' ? 'Localisation' : 'Location'}</h4>
+                                    <p className="text-gray-400">
+                                        {language === 'fr' ? 'France & International' : 'France & International'}
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </motion.div>
 
+                    {/* Right Column - Form */}
                     <motion.div
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="bg-navy-800/50 backdrop-blur-sm p-8 lg:p-12 border border-white/10"
+                        className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 lg:p-10"
                     >
                         {isSubmitted ? (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="text-center py-12"
-                            >
-                                <CheckCircle size={64} className="text-gold-500 mx-auto mb-6" />
-                                <h3 className="text-2xl font-serif text-white mb-4">{t('contact.form.thankYou')}</h3>
-                                <p className="text-gray-400 max-w-md mx-auto">
-                                    {t('contact.form.thankYouMessage')}
+                            <div className="text-center py-12">
+                                <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-6">
+                                    <CheckCircle className="text-green-500" size={40} />
+                                </div>
+                                <h3 className="text-2xl font-serif text-white mb-4">
+                                    {language === 'fr' ? 'Message envoyé !' : 'Message sent!'}
+                                </h3>
+                                <p className="text-gray-400 mb-8">
+                                    {language === 'fr'
+                                        ? 'Nous reviendrons vers vous dans les 24 heures.'
+                                        : 'We\'ll get back to you within 24 hours.'}
                                 </p>
-                            </motion.div>
+                                <Button
+                                    onClick={() => setIsSubmitted(false)}
+                                    className="bg-gold-500 hover:bg-gold-600 text-navy-900"
+                                >
+                                    {language === 'fr' ? 'Envoyer un autre message' : 'Send another message'}
+                                </Button>
+                            </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                {/* Request Type and Service Interest */}
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.requestType')}</label>
-                                        <Select
-                                            name="requestType"
-                                            value={formData.requestType}
+                                {/* Type de contact */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        {language === 'fr' ? 'Type de demande' : 'Request type'} *
+                                    </label>
+                                    <div className="relative">
+                                        <select
+                                            name="contactType"
+                                            value={formData.contactType}
                                             onChange={handleInputChange}
-                                            className="bg-navy-900/50 border-white/10 text-white focus:border-gold-500 h-12 rounded-none"
+                                            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent appearance-none pr-10"
                                         >
-                                            <option value="">{t('contact.form.selectType')}</option>
-                                            <option value={t('contact.form.type.consulting')}>{t('contact.form.type.consulting')}</option>
-                                            <option value={t('contact.form.type.training')}>{t('contact.form.type.training')}</option>
-                                            <option value={t('contact.form.type.implementation')}>{t('contact.form.type.implementation')}</option>
-                                            <option value={t('contact.form.type.support')}>{t('contact.form.type.support')}</option>
-                                            <option value={t('contact.form.type.partnership')}>{t('contact.form.type.partnership')}</option>
-                                            <option value={t('contact.form.type.other')}>{t('contact.form.type.other')}</option>
-                                        </Select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.serviceInterest')}</label>
-                                        <Select
-                                            name="serviceInterest"
-                                            value={formData.serviceInterest}
-                                            onChange={handleInputChange}
-                                            className="bg-navy-900/50 border-white/10 text-white focus:border-gold-500 h-12 rounded-none"
-                                        >
-                                            <option value="">{t('contact.form.selectService')}</option>
-                                            <option value={t('contact.form.service1')}>{t('contact.form.service1')}</option>
-                                            <option value={t('contact.form.service2')}>{t('contact.form.service2')}</option>
-                                            <option value={t('contact.form.service3')}>{t('contact.form.service3')}</option>
-                                            <option value={t('contact.form.service4')}>{t('contact.form.service4')}</option>
-                                            <option value={t('contact.form.service.multi')}>{t('contact.form.service.multi')}</option>
-                                            <option value={t('contact.form.service.notSure')}>{t('contact.form.service.notSure')}</option>
-                                        </Select>
+                                            {contactTypes[language as 'fr' | 'en'].map(option => (
+                                                <option key={option.value} value={option.value} className="bg-navy-900">
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
                                     </div>
                                 </div>
 
-                                {/* Name and Email */}
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.nameLabel')}</label>
+                                {/* Options dynamiques selon le type */}
+                                {showAuditOptions && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        className="space-y-6"
+                                    >
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                {language === 'fr' ? 'Type d\'audit' : 'Audit type'}
+                                            </label>
+                                            <div className="relative">
+                                                <select
+                                                    name="auditType"
+                                                    value={formData.auditType}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold-500 appearance-none pr-10"
+                                                >
+                                                    {auditTypes[language as 'fr' | 'en'].map(option => (
+                                                        <option key={option.value} value={option.value} className="bg-navy-900">
+                                                            {option.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+
+                                {showFormationOptions && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        className="space-y-6"
+                                    >
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                {language === 'fr' ? 'Type de formation' : 'Training type'}
+                                            </label>
+                                            <div className="relative">
+                                                <select
+                                                    name="formationType"
+                                                    value={formData.formationType}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold-500 appearance-none pr-10"
+                                                >
+                                                    {formationTypes[language as 'fr' | 'en'].map(option => (
+                                                        <option key={option.value} value={option.value} className="bg-navy-900">
+                                                            {option.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+
+                                {showConsultingOptions && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        className="space-y-6"
+                                    >
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                {language === 'fr' ? 'Besoin principal' : 'Main need'}
+                                            </label>
+                                            <div className="relative">
+                                                <select
+                                                    name="consultingNeed"
+                                                    value={formData.consultingNeed}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold-500 appearance-none pr-10"
+                                                >
+                                                    {consultingNeeds[language as 'fr' | 'en'].map(option => (
+                                                        <option key={option.value} value={option.value} className="bg-navy-900">
+                                                            {option.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+
+                                {/* Budget et Timeline (si projet) */}
+                                {showDetailedOptions && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        className="grid grid-cols-2 gap-4"
+                                    >
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                {language === 'fr' ? 'Budget' : 'Budget'}
+                                            </label>
+                                            <div className="relative">
+                                                <select
+                                                    name="budget"
+                                                    value={formData.budget}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold-500 appearance-none pr-10 text-sm"
+                                                >
+                                                    {budgetRanges[language as 'fr' | 'en'].map(option => (
+                                                        <option key={option.value} value={option.value} className="bg-navy-900">
+                                                            {option.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                                                {language === 'fr' ? 'Échéance' : 'Timeline'}
+                                            </label>
+                                            <div className="relative">
+                                                <select
+                                                    name="timeline"
+                                                    value={formData.timeline}
+                                                    onChange={handleInputChange}
+                                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-gold-500 appearance-none pr-10 text-sm"
+                                                >
+                                                    {timelines[language as 'fr' | 'en'].map(option => (
+                                                        <option key={option.value} value={option.value} className="bg-navy-900">
+                                                            {option.label}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+
+                                {/* Champs de base */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            {language === 'fr' ? 'Nom' : 'Name'} *
+                                        </label>
                                         <Input
                                             name="name"
                                             value={formData.name}
                                             onChange={handleInputChange}
                                             onBlur={handleBlur}
-                                            className={`bg-navy-900/50 border-white/10 text-white focus:border-gold-500 h-12 rounded-none ${errors.name && touched.has('name') ? 'border-red-500 focus:border-red-500' : ''}`}
+                                            placeholder={language === 'fr' ? 'Votre nom' : 'Your name'}
+                                            className={`bg-white/10 border ${errors.name && touched.has('name') ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-500`}
                                         />
                                         {errors.name && touched.has('name') && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: -10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                className="flex items-center gap-1 text-red-400 text-xs"
-                                            >
+                                            <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                                                 <AlertCircle size={12} />
-                                                <span>{errors.name}</span>
-                                            </motion.div>
+                                                {errors.name}
+                                            </p>
                                         )}
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.emailLabel')}</label>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            {language === 'fr' ? 'Email' : 'Email'} *
+                                        </label>
                                         <Input
-                                            name="email"
                                             type="email"
+                                            name="email"
                                             value={formData.email}
                                             onChange={handleInputChange}
                                             onBlur={handleBlur}
-                                            className={`bg-navy-900/50 border-white/10 text-white focus:border-gold-500 h-12 rounded-none ${errors.email && touched.has('email') ? 'border-red-500 focus:border-red-500' : ''}`}
+                                            placeholder="exemple@entreprise.com"
+                                            className={`bg-white/10 border ${errors.email && touched.has('email') ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-500`}
                                         />
                                         {errors.email && touched.has('email') && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: -10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                className="flex items-center gap-1 text-red-400 text-xs"
-                                            >
+                                            <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                                                 <AlertCircle size={12} />
-                                                <span>{errors.email}</span>
-                                            </motion.div>
+                                                {errors.email}
+                                            </p>
                                         )}
                                     </div>
                                 </div>
 
-                                {/* Company and Phone */}
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.companyLabel')}</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            {language === 'fr' ? 'Entreprise' : 'Company'}
+                                        </label>
                                         <Input
                                             name="company"
                                             value={formData.company}
                                             onChange={handleInputChange}
-                                            className="bg-navy-900/50 border-white/10 text-white focus:border-gold-500 h-12 rounded-none"
+                                            placeholder={language === 'fr' ? 'Nom de l\'entreprise' : 'Company name'}
+                                            className="bg-white/10 border border-white/20 text-white placeholder-gray-500"
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.phoneLabel')}</label>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">
+                                            {language === 'fr' ? 'Téléphone' : 'Phone'}
+                                        </label>
                                         <Input
+                                            type="tel"
                                             name="phone"
                                             value={formData.phone}
                                             onChange={handleInputChange}
                                             onBlur={handleBlur}
-                                            className={`bg-navy-900/50 border-white/10 text-white focus:border-gold-500 h-12 rounded-none ${errors.phone && touched.has('phone') ? 'border-red-500 focus:border-red-500' : ''}`}
+                                            placeholder="+33 6 12 34 56 78"
+                                            className={`bg-white/10 border ${errors.phone && touched.has('phone') ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-500`}
                                         />
                                         {errors.phone && touched.has('phone') && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: -10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                className="flex items-center gap-1 text-red-400 text-xs"
-                                            >
+                                            <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                                                 <AlertCircle size={12} />
-                                                <span>{errors.phone}</span>
-                                            </motion.div>
+                                                {errors.phone}
+                                            </p>
                                         )}
                                     </div>
                                 </div>
 
-                                {/* Subject */}
-                                <div className="space-y-2">
-                                    <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.subjectLabel')}</label>
-                                    <Input
-                                        name="subject"
-                                        value={formData.subject}
-                                        onChange={handleInputChange}
-                                        className="bg-navy-900/50 border-white/10 text-white focus:border-gold-500 h-12 rounded-none"
-                                    />
-                                </div>
-
-                                {/* Message */}
-                                <div className="space-y-2">
-                                    <label className="text-xs uppercase tracking-wider text-gray-400">{t('contact.form.messageLabel')}</label>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                                        {language === 'fr' ? 'Message' : 'Message'} *
+                                    </label>
                                     <Textarea
                                         name="message"
                                         value={formData.message}
                                         onChange={handleInputChange}
                                         onBlur={handleBlur}
-                                        rows={4}
-                                        className={`bg-navy-900/50 border-white/10 text-white focus:border-gold-500 rounded-none resize-none ${errors.message && touched.has('message') ? 'border-red-500 focus:border-red-500' : ''}`}
+                                        rows={5}
+                                        placeholder={language === 'fr' ? 'Décrivez votre projet ou votre besoin...' : 'Describe your project or need...'}
+                                        className={`bg-white/10 border ${errors.message && touched.has('message') ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-500 resize-none`}
                                     />
                                     {errors.message && touched.has('message') && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: -10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="flex items-center gap-1 text-red-400 text-xs"
-                                        >
+                                        <p className="text-red-400 text-xs mt-1 flex items-center gap-1">
                                             <AlertCircle size={12} />
-                                            <span>{errors.message}</span>
-                                        </motion.div>
+                                            {errors.message}
+                                        </p>
                                     )}
                                 </div>
 
-                                {/* Submit Button */}
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full h-14 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold uppercase tracking-widest rounded-none transition-colors duration-300 flex items-center justify-center gap-2"
+                                    className="w-full bg-gold-500 hover:bg-gold-600 text-navy-900 font-semibold py-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isSubmitting ? (
                                         <>
-                                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-navy-900" />
-                                            <span>{t('contact.form.sending')}</span>
+                                            <div className="w-5 h-5 border-2 border-navy-900/30 border-t-navy-900 rounded-full animate-spin" />
+                                            {language === 'fr' ? 'Envoi en cours...' : 'Sending...'}
                                         </>
                                     ) : (
                                         <>
+                                            {language === 'fr' ? 'Envoyer' : 'Send'}
                                             <Send size={18} />
-                                            <span>{t('contact.form.sendButton')}</span>
                                         </>
                                     )}
                                 </Button>
+
+                                <p className="text-xs text-gray-500 text-center">
+                                    {language === 'fr'
+                                        ? '* Champs obligatoires. Vos données sont sécurisées et ne seront jamais partagées.'
+                                        : '* Required fields. Your data is secure and will never be shared.'}
+                                </p>
                             </form>
                         )}
                     </motion.div>
