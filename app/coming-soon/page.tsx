@@ -55,7 +55,7 @@ export default function ComingSoonPage() {
                     </div>
 
                     {/* Title */}
-                    <h1 className="font-serif text-5xl md:text-7xl text-white mb-6 leading-tight">
+                    <h1 className="font-serif text-5xl md:text-7xl text-white mb-8 leading-tight drop-shadow-2xl">
                         {language === 'fr' ? (
                             <>
                                 Bientôt <span className="text-gold-500">Disponible</span>
@@ -68,13 +68,13 @@ export default function ComingSoonPage() {
                     </h1>
 
                     {/* Subtitle */}
-                    <p className="text-gray-400 text-lg md:text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-gray-300 text-lg md:text-xl mb-4 max-w-2xl mx-auto leading-relaxed">
                         {language === 'fr'
                             ? 'Nous préparons quelque chose d\'exceptionnel pour vous.'
                             : 'We\'re preparing something exceptional for you.'}
                     </p>
 
-                    <p className="text-gray-500 mb-12 max-w-xl mx-auto">
+                    <p className="text-gray-400 mb-12 max-w-xl mx-auto text-base">
                         {language === 'fr'
                             ? 'Cette section est en cours de développement. Inscrivez-vous pour être notifié de son lancement.'
                             : 'This section is under development. Sign up to be notified of its launch.'}
@@ -127,10 +127,9 @@ export default function ComingSoonPage() {
                     {/* Back to Home */}
                     <Link href="/">
                         <Button
-                            variant="outline"
-                            className="border-white/20 text-white hover:bg-white/10 hover:text-gold-500 transition-all"
+                            className="bg-white/10 hover:bg-gold-500 text-white hover:text-navy-900 border-2 border-white/30 hover:border-gold-500 transition-all duration-300 px-8 py-6 text-base font-semibold"
                         >
-                            <ArrowLeft size={18} className="mr-2" />
+                            <ArrowLeft size={20} className="mr-2" />
                             {language === 'fr' ? 'Retour à l\'accueil' : 'Back to home'}
                         </Button>
                     </Link>
