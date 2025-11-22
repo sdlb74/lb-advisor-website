@@ -46,7 +46,7 @@ export function StatsSection() {
     });
 
     return (
-        <section className="snap-section min-h-screen flex items-center bg-navy-900 relative overflow-hidden" ref={ref}>
+        <section id="stats" className="min-h-screen flex items-center bg-navy-900 relative overflow-hidden" ref={ref}>
             {/* Background Elements */}
             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=85&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay" />
             <div className="absolute inset-0 bg-gradient-to-b from-navy-900 via-navy-900/90 to-navy-900" />

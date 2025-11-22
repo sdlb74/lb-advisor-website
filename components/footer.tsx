@@ -29,7 +29,7 @@ export function Footer() {
     };
 
     return (
-        <footer className="snap-section min-h-screen flex flex-col justify-center bg-navy-900 text-white relative overflow-hidden">
+        <footer className="min-h-screen flex flex-col justify-center bg-navy-900 text-white relative overflow-hidden">
             {/* Decorative Background */}
             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=85&auto=format&fit=crop')] bg-cover bg-center opacity-5 mix-blend-overlay" />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/90 to-navy-900/80" />

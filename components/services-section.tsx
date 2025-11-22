@@ -62,7 +62,7 @@ export function ServicesSection() {
     });
 
     return (
-        <section id="services" className="snap-section min-h-screen flex flex-col justify-center bg-navy-900 py-20" ref={ref}>
+        <section id="services" className="min-h-screen flex flex-col justify-center bg-navy-900 py-20" ref={ref}>
             <div className="max-w-7xl mx-auto px-6 sm:px-8 w-full h-full flex flex-col justify-center">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}

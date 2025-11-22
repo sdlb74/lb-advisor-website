@@ -67,7 +67,7 @@ export function HeroSection() {
     return (
         <section
             id="hero"
-            className="snap-section relative min-h-screen flex items-center justify-center overflow-hidden bg-navy-900"
+            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-navy-900"
             onMouseMove={handleMouseMove}
         >
             {/* Animated Background with Parallax */}

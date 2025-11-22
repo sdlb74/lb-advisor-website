@@ -253,7 +253,7 @@ export function ContactSection() {
         <section
             id="contact"
             ref={ref}
-            className="snap-section relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-navy-900 to-navy-950"
+            className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-navy-900 to-navy-950"
         >
             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80')] bg-cover bg-center opacity-5" />
 

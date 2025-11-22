@@ -12,7 +12,7 @@ export function PhilosophySection() {
     });
 
     return (
-        <section className="snap-section min-h-screen flex items-center bg-white relative overflow-hidden" ref={ref}>
+        <section id="philosophy" className="min-h-screen flex items-center bg-white relative overflow-hidden" ref={ref}>
             {/* Background Elements */}
             <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-gray-50 to-transparent opacity-50" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" />

@@ -7,20 +7,20 @@ import { StatsSection } from '@/components/stats-section'
 import { PhilosophySection } from '@/components/philosophy-section'
 import { ContactSection } from '@/components/contact-section'
 import { Footer } from '@/components/footer'
-import { ScrollLock } from '@/components/scroll-lock'
+import { SectionNavigator } from '@/components/section-navigator'
 
 export default function Home() {
   return (
     <>
-      <ScrollLock />
       <Header />
-      <main className="snap-container h-screen w-full overflow-y-scroll scroll-smooth">
+      <SectionNavigator />
+      <main className="w-full">
         <HeroSection />
         <AboutSection />
         <ServicesSection />
-        <FormationSection />
         <StatsSection />
         <PhilosophySection />
+        <FormationSection />
         <ContactSection />
         <Footer />
       </main>
