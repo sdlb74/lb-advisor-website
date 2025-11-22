@@ -47,17 +47,17 @@ export function ContactSection() {
     const contactTypes = {
         fr: [
             { value: '', label: 'Sélectionnez un type de demande' },
-            { value: 'audit', label: '🔍 Audit & Évaluation' },
-            { value: 'formation', label: '📚 Formation Enterprise' },
-            { value: 'consulting', label: '💼 Conseil Stratégique' },
-            { value: 'simple', label: '💬 Simple Contact' }
+            { value: 'audit', label: 'Audit & Évaluation' },
+            { value: 'formation', label: 'Formation Enterprise' },
+            { value: 'consulting', label: 'Conseil Stratégique' },
+            { value: 'simple', label: 'Simple Contact' }
         ],
         en: [
             { value: '', label: 'Select request type' },
-            { value: 'audit', label: '🔍 Audit & Assessment' },
-            { value: 'formation', label: '📚 Enterprise Training' },
-            { value: 'consulting', label: '💼 Strategic Consulting' },
-            { value: 'simple', label: '💬 Simple Contact' }
+            { value: 'audit', label: 'Audit & Assessment' },
+            { value: 'formation', label: 'Enterprise Training' },
+            { value: 'consulting', label: 'Strategic Consulting' },
+            { value: 'simple', label: 'Simple Contact' }
         ]
     };
 

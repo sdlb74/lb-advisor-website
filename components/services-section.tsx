@@ -12,6 +12,11 @@ const services = [
         icon: Users,
         titleKey: 'service1.title',
         descKey: 'service1.desc',
+        technologies: [
+            { name: 'AWS', logo: 'https://cdn.simpleicons.org/amazonaws/FF9900' },
+            { name: 'Azure', logo: 'https://cdn.simpleicons.org/microsoftazure/0078D4' },
+            { name: 'GCP', logo: 'https://cdn.simpleicons.org/googlecloud/4285F4' }
+        ],
         projectKeys: [
             { titleKey: 'service1.project1.title', descKey: 'service1.project1.desc' },
             { titleKey: 'service1.project2.title', descKey: 'service1.project2.desc' },
@@ -23,6 +28,11 @@ const services = [
         icon: Cloud,
         titleKey: 'service2.title',
         descKey: 'service2.desc',
+        technologies: [
+            { name: 'Terraform', logo: 'https://cdn.simpleicons.org/terraform/7B42BC' },
+            { name: 'AWS', logo: 'https://cdn.simpleicons.org/amazonaws/FF9900' },
+            { name: 'Azure', logo: 'https://cdn.simpleicons.org/microsoftazure/0078D4' }
+        ],
         projectKeys: [
             { titleKey: 'service2.project1.title', descKey: 'service2.project1.desc' },
             { titleKey: 'service2.project2.title', descKey: 'service2.project2.desc' },
@@ -34,6 +44,11 @@ const services = [
         icon: Shield,
         titleKey: 'service3.title',
         descKey: 'service3.desc',
+        technologies: [
+            { name: 'Docker', logo: 'https://cdn.simpleicons.org/docker/2496ED' },
+            { name: 'Kubernetes', logo: 'https://cdn.simpleicons.org/kubernetes/326CE5' },
+            { name: 'Helm', logo: 'https://cdn.simpleicons.org/helm/0F1689' }
+        ],
         projectKeys: [
             { titleKey: 'service3.project1.title', descKey: 'service3.project1.desc' },
             { titleKey: 'service3.project2.title', descKey: 'service3.project2.desc' },
@@ -45,6 +60,11 @@ const services = [
         icon: Cog,
         titleKey: 'service4.title',
         descKey: 'service4.desc',
+        technologies: [
+            { name: 'GitLab', logo: 'https://cdn.simpleicons.org/gitlab/FC6D26' },
+            { name: 'GitHub', logo: 'https://cdn.simpleicons.org/github/181717' },
+            { name: 'Jenkins', logo: 'https://cdn.simpleicons.org/jenkins/D24939' }
+        ],
         projectKeys: [
             { titleKey: 'service4.project1.title', descKey: 'service4.project1.desc' },
             { titleKey: 'service4.project2.title', descKey: 'service4.project2.desc' },

@@ -51,10 +51,48 @@ const translations = {
 
         // Formation
         'formation.label': 'Notre pilier fondamental',
-        'formation.title': 'La formation au cœur de la transformation',
-        'formation.intro': 'Tout commence par un apprentissage qui a du sens. Nous concevons des parcours de formation et de coaching qui partent de votre réalité, de vos contraintes et de vos objectifs, pour créer des changements visibles dans le quotidien de vos équipes.',
-        'formation.subtitle': 'Planter des compétences qui continuent de grandir',
-        'formation.text': 'Nous construisons des expériences d’apprentissage où chaque personne devient plus autonome, plus confiante et plus capable de faire évoluer les autres : ateliers interactifs, coaching individuel et d’équipe, parcours hybridant Cloud, IA, cybersécurité, DevOps et Modern Workplace.',
+        'formation.title': 'Parcours de Formation',
+        'formation.intro': 'Tout commence par un apprentissage qui a du sens. Nous concevons des parcours de formation et de coaching qui partent de votre réalité, de vos contraintes et de vos objectifs.',
+        'formation.subtitle': 'Sur-mesure et adossés à 10+ ans d\'expérience terrain',
+        'formation.text': 'Nos parcours allient rigueur architecturale, sécurité by design et accompagnement humain. Chaque formation est adaptée au contexte spécifique de votre organisation.',
+        'formation.cta': 'Demander un programme sur-mesure',
+
+        // Formation Paths - FR
+        'formation.path1.title': 'Cloud Architecture & Gouvernance Stratégique',
+        'formation.path1.proof': 'Une méthodologie éprouvée lors de migrations critiques (50+ applications secteur public, 1100+ serveurs secteur assurance). Une approche axée sur la résilience et la conformité stricte.',
+        'formation.path1.audience': 'CTO, Architectes Cloud, Managers Infrastructure',
+        'formation.path1.learn1': 'Architecture multi-cloud (Azure, AWS, GCP) avec Landing Zones',
+        'formation.path1.learn2': 'Gouvernance, conformité et gestion des risques',
+        'formation.path1.learn3': 'FinOps et optimisation des coûts cloud',
+        'formation.path1.certifications': 'AZ-305, AWS SAA, GCP Pro Architect',
+
+        'formation.path2.title': 'Transformation Digitale & Leadership Cloud',
+        'formation.path2.proof': 'Capitalisant sur le pilotage de programmes de transformation majeurs impliquant plus de 100 collaborateurs. Une vision stratégique pour aligner technologie et objectifs d\'affaires.',
+        'formation.path2.audience': 'CEO, COO, Directeurs de Transformation',
+        'formation.path2.learn1': 'Pilotage de transformation cloud d\'entreprise',
+        'formation.path2.learn2': 'Conduite du changement et adoption',
+        'formation.path2.learn3': 'Stratégie ROI et Business Case',
+        'formation.path2.certifications': 'SAFe Architect, ITIL 4',
+
+        'formation.path3.title': 'Modern Workplace & Sécurité Cloud',
+        'formation.path3.proof': 'Savoir-faire démontré dans la modernisation et la sécurisation d\'environnements utilisateurs à grande échelle (Azure Virtual Desktop, Intune, Entra ID).',
+        'formation.path3.audience': 'DSI, Responsables SI, Managers IT',
+        'formation.path3.learn1': 'Stratégie Modern Workplace (M365, AVD)',
+        'formation.path3.learn2': 'Gouvernance des identités (Zero Trust)',
+        'formation.path3.learn3': 'Conformité et sécurité des endpoints',
+        'formation.path3.certifications': 'MS-900, AZ-104, SC-300',
+
+        'formation.path4.title': 'DevOps & Cloud-Native',
+        'formation.path4.proof': 'Expertise technique issue du déploiement d\'infrastructures cloud pour des grands comptes du luxe. Transmission des meilleures pratiques CI/CD et conteneurisation.',
+        'formation.path4.audience': 'Développeurs, DevOps Engineers',
+        'formation.path4.learn1': 'Infrastructure as Code (Terraform, Ansible)',
+        'formation.path4.learn2': 'Pipelines CI/CD et automatisation',
+        'formation.path4.learn3': 'Kubernetes et environnements conteneurisés',
+        'formation.path4.certifications': 'Terraform Associate, CKA',
+
+        'formation.transversal.title': 'Notre Différence : Excellence & Sur-Mesure',
+        'formation.transversal.text': 'Tous nos parcours intègrent coaching personnel, architecture résiliente, sécurité by design et best practices ITIL/Agile. Chaque formation est construite selon vos objectifs et votre contexte.',
+        'formation.transversal.credentials': 'MBA + 15+ certifications cloud',
 
         // Stats
         'stats.years': 'Années d\'expertise en transformation cloud',
@@ -258,10 +296,48 @@ const translations = {
 
         // Formation
         'formation.label': 'Our fundamental pillar',
-        'formation.title': 'Learning at the heart of transformation',
-        'formation.intro': 'Everything starts with meaningful learning. We design training and coaching journeys grounded in your reality, constraints and objectives, to create visible changes in the day-to-day work of your teams.',
-        'formation.subtitle': 'Planting skills that keep growing',
-        'formation.text': 'We build learning experiences where each person becomes more autonomous, more confident and more capable of helping others grow: interactive workshops, individual and team coaching, journeys combining Cloud, AI, cybersecurity, DevOps and Modern Workplace.',
+        'formation.title': 'Training Paths',
+        'formation.intro': 'Everything starts with meaningful learning. We design training and coaching journeys grounded in your reality, constraints and objectives.',
+        'formation.subtitle': 'Tailored and backed by 10+ years of field experience',
+        'formation.text': 'Our paths combine architectural rigor, security by design and human support. Each training is adapted to the specific context of your organization.',
+        'formation.cta': 'Request a custom program',
+
+        // Formation Paths - EN
+        'formation.path1.title': 'Cloud Architecture & Strategic Governance',
+        'formation.path1.proof': 'A proven methodology during critical migrations (50+ public sector applications, 1100+ insurance sector servers). An approach focused on resilience and strict compliance.',
+        'formation.path1.audience': 'CTO, Cloud Architects, Infrastructure Managers',
+        'formation.path1.learn1': 'Multi-cloud architecture (Azure, AWS, GCP) with Landing Zones',
+        'formation.path1.learn2': 'Governance, compliance and risk management',
+        'formation.path1.learn3': 'FinOps and cloud cost optimization',
+        'formation.path1.certifications': 'AZ-305, AWS SAA, GCP Pro Architect',
+
+        'formation.path2.title': 'Digital Transformation & Cloud Leadership',
+        'formation.path2.proof': 'Capitalizing on the management of major transformation programs involving more than 100 collaborators. A strategic vision to align technology and business objectives.',
+        'formation.path2.audience': 'CEO, COO, Transformation Directors',
+        'formation.path2.learn1': 'Steering enterprise cloud transformation',
+        'formation.path2.learn2': 'Change management and adoption',
+        'formation.path2.learn3': 'ROI Strategy and Business Case',
+        'formation.path2.certifications': 'SAFe Architect, ITIL 4',
+
+        'formation.path3.title': 'Modern Workplace & Cloud Security',
+        'formation.path3.proof': 'Demonstrated know-how in modernizing and securing large-scale user environments (Azure Virtual Desktop, Intune, Entra ID).',
+        'formation.path3.audience': 'CIO, IT Managers',
+        'formation.path3.learn1': 'Modern Workplace Strategy (M365, AVD)',
+        'formation.path3.learn2': 'Identity Governance (Zero Trust)',
+        'formation.path3.learn3': 'Endpoint compliance and security',
+        'formation.path3.certifications': 'MS-900, AZ-104, SC-300',
+
+        'formation.path4.title': 'DevOps & Cloud-Native',
+        'formation.path4.proof': 'Technical expertise derived from deploying cloud infrastructures for major luxury accounts. Transmission of CI/CD and containerization best practices.',
+        'formation.path4.audience': 'Developers, DevOps Engineers',
+        'formation.path4.learn1': 'Infrastructure as Code (Terraform, Ansible)',
+        'formation.path4.learn2': 'CI/CD pipelines and automation',
+        'formation.path4.learn3': 'Kubernetes and containerized environments',
+        'formation.path4.certifications': 'Terraform Associate, CKA',
+
+        'formation.transversal.title': 'Our Difference: Excellence & Tailored Approach',
+        'formation.transversal.text': 'All our paths integrate personal coaching, resilient architecture, security by design and ITIL/Agile best practices. Each training is built according to your objectives and context.',
+        'formation.transversal.credentials': 'MBA + 15+ cloud certifications',
 
         // Stats
         'stats.years': 'Years of expertise in cloud transformation',
